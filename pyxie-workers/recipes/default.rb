@@ -8,8 +8,8 @@ include_recipe "docker::default"
 include_recipe "docker::upstart"
 include_recipe "redisio::install"
 include_recipe "redisio::enable"
-include_recipe "nodejs::install_from_source"
-include_recipe "npm"
+include_recipe "nodejs::default"
+#include_recipe "npm"
 
 
 rbenv_gem "bundler" do
@@ -20,16 +20,13 @@ rbenv_gem "bundler" do
 end
 
 # enable the  the docker.conf file to enable the docker API 
-group "docker" do
-  action :modify
-  members "vagrant"
-  append true
-end
+#group "docker" do
+#  action :modify
+#  members "vagrant"
+#  append true
+#end
 
-execute "install_hipache_module" do
-  command "npm install -g hipache"
-  action :run
-end
+#npm_package "hipache"
 
 cookbook_file '/etc/init/hipache.conf' do
   source "hipache.conf"
@@ -52,7 +49,6 @@ service 'hipache' do
   provider Chef::Provider::Service::Upstart
   supports :restart => true, :start => true, :stop => true
   action [:enable, :start]
-  
 end
 
 
