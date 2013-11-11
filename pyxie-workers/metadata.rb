@@ -9,7 +9,6 @@ version          '0.1.0'
   supports os
 end
 
-recipe "dockervagrant::default", "Recipe specifically for local provisioning via Vagrant"
 
 depends "docker"
 depends "apt"
@@ -17,5 +16,4 @@ depends "ruby_build"
 depends "rbenv"
 depends "git"
 depends "redisio"
-depends "postgresql"
 depends "nodejs"
