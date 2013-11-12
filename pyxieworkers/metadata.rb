@@ -1,4 +1,4 @@
-name             'pyxie-workers'
+name             'pyxieworkers'
 maintainer       'Andrew Odewahn'
 maintainer_email 'odewahn@oreilly.com'
 license          'MIT'
