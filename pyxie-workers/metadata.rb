@@ -1,10 +1,13 @@
-name             'docker vagrant example'
-maintainer       'Steve Klise'
-maintainer_email 'sklise@oreilly.com'
-license          'Apache 2.0'
-description      'Installs/Configures Docker along with some other stuff'
-long_description 'Installs/Configures Docker with redis and postgres'
+name             'pyxie-workers'
+maintainer       'Andrew Odewahn'
+maintainer_email 'odewahn@oreilly.com'
+license          'MIT'
+description      'Installs/Configures pyxie-workers'
+long_description 'Installs/Configures pyxie-workers'
 version          '0.1.0'
+recipe           'pyxie-workers', 'Installs and configures pyxie-workers'
+
+
 %w[ debian ubuntu centos redhat fedora scientific suse amazon].each do |os|
   supports os
 end
