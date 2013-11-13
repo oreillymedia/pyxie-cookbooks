@@ -31,7 +31,7 @@ node[:deploy].each do |application, deploy|
 
    dotenv_create do
      environment deploy[:environment]
-     path        "#{deploy[:deploy_to]}/current"
+     path        "#{deploy[:deploy_to]}"
      group       deploy[:group]
      user        deploy[:user]
    end
