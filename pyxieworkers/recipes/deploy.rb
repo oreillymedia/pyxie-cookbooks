@@ -3,12 +3,12 @@ ENV['LANGUAGE'] = ENV['LANG'] = ENV['LC_ALL'] = "en_US.UTF-8"
 include_recipe "apt"
 include_recipe "ruby_build"
 include_recipe "rbenv::user"
-#include_recipe "docker::aufs"
-include_recipe "docker::binary"
-include_recipe "docker::upstart"
 include_recipe "redisio::install"
 include_recipe "redisio::enable"
 include_recipe "nodejs::default"
+include_recipe "docker::default"
+include_recipe "docker::upstart"
+
 #include_recipe "npm"
 
 node[:deploy].each do |application, deploy|
