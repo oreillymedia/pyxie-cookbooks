@@ -5,7 +5,7 @@ license          'MIT'
 description      'Installs/Configures pyxie-workers'
 long_description 'Installs/Configures pyxie-workers'
 version          '0.1.0'
-recipe           'pyxie-workers', 'Installs and configures pyxie-workers'
+recipe           'pyxieworkers', 'Installs and configures pyxie workers'
 
 
 %w[ debian ubuntu centos redhat fedora scientific suse amazon].each do |os|
