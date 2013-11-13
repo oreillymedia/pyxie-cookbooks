@@ -13,6 +13,7 @@ recipe           'pyxie-workers', 'Installs and configures pyxie-workers'
 end
 
 
+depends "dotenv"
 depends "docker"
 depends "apt"
 depends "ruby_build"
