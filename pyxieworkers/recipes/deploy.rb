@@ -17,10 +17,10 @@ node[:deploy].each do |application, deploy|
    Chef::Log.debug("Deploying #{application} with vars #{deploy.inspect}")
 
    # add the deploy user
-   opsworks_deploy_user do
-     deploy_data deploy
-     app application
-   end
+#   opsworks_deploy_user do
+#     deploy_data deploy
+#     app application
+#   end
 
    rbenv_gem "bundler" do
      rbenv_version   "1.9.3-p448"
