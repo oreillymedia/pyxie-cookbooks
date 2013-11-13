@@ -3,16 +3,17 @@ ENV['LANGUAGE'] = ENV['LANG'] = ENV['LC_ALL'] = "en_US.UTF-8"
 include_recipe "apt"
 include_recipe "ruby_build"
 include_recipe "rbenv::user"
-include_recipe "redisio::install"
-include_recipe "redisio::enable"
-include_recipe "nodejs::default"
-include_recipe "docker::default"
-include_recipe "docker::upstart"
+#include_recipe "redisio::install"
+#include_recipe "redisio::enable"
+#include_recipe "nodejs::default"
+#include_recipe "docker::default"
+#include_recipe "docker::upstart"
 
 #include_recipe "npm"
 
 node[:deploy].each do |application, deploy|
-   Chef::Log.debug("Pyxie")
+  
+   Chef::Log.debug("*** Start here ***")
    Chef::Log.debug("Deploying #{application} with vars #{deploy.inspect}")
 
    # add the deploy user
@@ -21,10 +22,9 @@ node[:deploy].each do |application, deploy|
      app application
    end
 
-
    rbenv_gem "bundler" do
      rbenv_version   "1.9.3-p448"
-     user            node[:user]
+     user            deploy[:user]
      version         "1.3.5"
      action          :install
    end
