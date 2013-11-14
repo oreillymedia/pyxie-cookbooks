@@ -1,16 +1,6 @@
 ENV['LANGUAGE'] = ENV['LANG'] = ENV['LC_ALL'] = "en_US.UTF-8"
 
 include_recipe "apt"
-
-# make sure bundler is installed
-gem_package "Installing Bundler #{node[:bundler][:version]}" do
-  gem_binary node[:dependencies][:gem_binary]
-  retries 2
-  package_name "bundler"
-  action :install
-  version node[:bundler][:version]
-end
-
 include_recipe "redisio::install"
 include_recipe "redisio::enable"
 #include_recipe "nodejs::default"
@@ -36,6 +26,14 @@ node[:deploy].each do |application, deploy|
      app application
    end
    
+   # make sure bundler is installed
+   gem_package "Installing Bundler #{node[:bundler][:version]}" do
+     gem_binary node[:dependencies][:gem_binary]
+     retries 2
+     package_name "bundler"
+     action :install
+     version node[:bundler][:version]
+   end
    
    gem_package "foreman" do
      action :install
