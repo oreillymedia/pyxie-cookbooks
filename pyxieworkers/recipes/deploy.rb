@@ -28,6 +28,22 @@ node[:deploy].each do |application, deploy|
      version         "1.3.5"
      action          :install
    end
+   
+   
+   directory "#{deploy[:deploy_to]}" do
+     group deploy[:group]
+     owner deploy[:user]
+     mode 0770
+     action :create
+     recursive true
+   end
+
+
+   # pull down the app code
+   opsworks_deploy do
+     deploy_data deploy
+     app application
+   end
 
    dotenv_create do
      environment deploy[:environment]
