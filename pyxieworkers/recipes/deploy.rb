@@ -37,7 +37,7 @@ node[:deploy].each do |application, deploy|
    end
    
    
-   rbenv_gem "foreman" do
+   gem_package "foreman" do
      rbenv_version   "1.9.3-p0"
      action          :install
    end
