@@ -28,6 +28,11 @@ node[:deploy].each do |application, deploy|
      app application
    end
    
+   
+   rbenv_gem "bundler" do
+     rbenv_version   "1.9.3-p0"
+     action          :install
+   end
 
    #rbenv_gem "bundler" do
    # rbenv_version   "1.9.3-p448"
