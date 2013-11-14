@@ -21,6 +21,7 @@ node[:deploy].each do |application, deploy|
      deploy_data deploy
      app application
    end
+   
 
    rbenv_gem "bundler" do
      rbenv_version   "1.9.3-p448"
@@ -30,7 +31,7 @@ node[:deploy].each do |application, deploy|
    end
    
    
-   directory "#{deploy[:deploy_to]}" do
+   directory "#{deploy[:deploy_to]}/current" do
      group deploy[:group]
      owner deploy[:user]
      mode 0770
@@ -47,7 +48,7 @@ node[:deploy].each do |application, deploy|
 
    dotenv_create do
      environment deploy[:environment]
-     path        "#{deploy[:deploy_to]}"
+     path        "#{deploy[:deploy_to]}/current"
      group       deploy[:group]
      user        deploy[:user]
    end
