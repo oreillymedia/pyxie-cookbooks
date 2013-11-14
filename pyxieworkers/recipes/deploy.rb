@@ -34,23 +34,23 @@ node[:deploy].each do |application, deploy|
    #  user            deploy[:user]
   #   version         "1.3.5"
   #   action          :install
-   #end
+  # end
    
    
-   directory "#{deploy[:deploy_to]}/current" do
-     group deploy[:group]
-     owner deploy[:user]
-     mode 0770
-     action :create
-     recursive true
-   end
+#   directory "#{deploy[:deploy_to]}/current" do
+#     group deploy[:group]
+#     owner deploy[:user]
+#     mode 0770
+#     action :create
+#     recursive true
+#   end
 
-   dotenv_create do
-     environment deploy[:environment]
-     path        "#{deploy[:deploy_to]}/current"
-     group       deploy[:group]
-     user        deploy[:user]
-   end
+#   dotenv_create do
+#     environment deploy[:environment]
+#     path        "#{deploy[:deploy_to]}/current"
+#     group       deploy[:group]
+#     user        deploy[:user]
+#   end
    
    
    # enable the  the docker.conf file to enable the docker API 
@@ -61,27 +61,27 @@ node[:deploy].each do |application, deploy|
    #end
    #npm_package "hipache"
 
-   cookbook_file '/etc/init/hipache.conf' do
-      source "hipache.conf"
-      owner 'root'
-      group 'root'
-      mode '0644'
-   end
+#   cookbook_file '/etc/init/hipache.conf' do
+#      source "hipache.conf"
+#      owner 'root'
+#      group 'root'
+#      mode '0644'
+#   end
 
-   template '/etc/hipache.conf' do
-     source 'hipache.conf.erb'
-     owner 'root'
-     group 'root'
-     mode '0644'
-     variables(
-       :redisHost => node['hipache']['redisHost']
-     )
-   end
+#   template '/etc/hipache.conf' do
+#     source 'hipache.conf.erb'
+#     owner 'root'
+#     group 'root'
+#     mode '0644'
+#     variables(
+#       :redisHost => node['hipache']['redisHost']
+#     )
+#   end
 
-   service 'hipache' do
-     provider Chef::Provider::Service::Upstart
-     supports :restart => true, :start => true, :stop => true
-     action [:enable, :start]
-   end
+#   service 'hipache' do
+#     provider Chef::Provider::Service::Upstart
+#     supports :restart => true, :start => true, :stop => true
+#     action [:enable, :start]
+#   end
 
 end
