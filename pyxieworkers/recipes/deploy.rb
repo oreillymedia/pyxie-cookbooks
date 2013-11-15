@@ -1,14 +1,23 @@
 ENV['LANGUAGE'] = ENV['LANG'] = ENV['LC_ALL'] = "en_US.UTF-8"
 
 include_recipe "apt"
-include_recipe "redisio::install"
-include_recipe "redisio::enable"
-#include_recipe "nodejs::default"
+
+#include_recipe "redisio::install"
+#include_recipe "redisio::enable"
+
+
+#******************************************************************************************
+#  Set up docker
+#******************************************************************************************
+
 #include_recipe "docker::default"
 #include_recipe "docker::upstart"
 
-#include_recipe "npm"
 
+
+#******************************************************************************************
+#  Set up everything involved in the ruby environment and the app
+#******************************************************************************************
 
 # make sure bundler is installed
 gem_package "Installing Bundler #{node[:bundler][:version]}" do
@@ -68,28 +77,36 @@ node[:deploy].each do |application, deploy|
      user  deploy[:user]
    end
    
-
-   cookbook_file '/etc/init/hipache.conf' do
-      source "hipache.conf"
-      owner 'root'
-      group 'root'
-      mode '0644'
-   end
-
-   template '/etc/hipache.conf' do
-     source 'hipache.conf.erb'
-     owner 'root'
-     group 'root'
-     mode '0644'
-     variables(
-       :redisHost => node['hipache']['redisHost']
-     )
-   end
-
-   service 'hipache' do
-     provider Chef::Provider::Service::Upstart
-     supports :restart => true, :start => true, :stop => true
-     action [:enable, :start]
-   end
-
 end
+
+
+#******************************************************************************************
+#  Set up hipache
+#******************************************************************************************
+
+#include_recipe "nodejs::default"
+#include_recipe "npm"
+
+cookbook_file '/etc/init/hipache.conf' do
+   source "hipache.conf"
+   owner 'root'
+   group 'root'
+   mode '0644'
+end
+
+template '/etc/hipache.conf' do
+  source 'hipache.conf.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  variables(
+    :redisHost => node['hipache']['redisHost']
+  )
+end
+
+service 'hipache' do
+  provider Chef::Provider::Service::Upstart
+  supports :restart => true, :start => true, :stop => true
+  action [:enable, :start]
+end
+
