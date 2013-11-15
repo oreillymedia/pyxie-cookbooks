@@ -9,20 +9,20 @@ include_recipe "apt"
 #  Set up docker
 #******************************************************************************************
 
-execute "install_docker" do
-  command "curl -sL https://get.docker.io/ | sh"
-end
+#execute "install_docker" do
+#  command "curl -sL https://get.docker.io/ | sh"
+#end
 
-execute "downgrade_docker" do
-  command "apt-get install -y lxc-docker-0.6.4"
-end
+#execute "downgrade_docker" do
+#  command "apt-get install -y lxc-docker-0.6.4"
+#end
 
-cookbook_file '/etc/init/docker.conf' do
-   source "docker.conf"
-   owner 'root'
-   group 'root'
-   mode '0644'
-end
+#cookbook_file '/etc/init/docker.conf' do
+#   source "docker.conf"
+#   owner 'root'
+#   group 'root'
+#   mode '0644'
+#end
 
 
 #******************************************************************************************
