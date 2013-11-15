@@ -2,8 +2,8 @@ ENV['LANGUAGE'] = ENV['LANG'] = ENV['LC_ALL'] = "en_US.UTF-8"
 
 include_recipe "apt"
 
-include_recipe "redisio::install"
-include_recipe "redisio::enable"
+#include_recipe "redisio::install"
+#include_recipe "redisio::enable"
 
 
 #******************************************************************************************
