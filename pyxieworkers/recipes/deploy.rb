@@ -28,7 +28,7 @@ node[:deploy].each do |application, deploy|
    end
    
    node[:packages].each do |package|
-      execute "bundle install #{package}" do
+      execute "gem install #{package}" do
         cwd   "#{deploy[:deploy_to]}/current"
         user  deploy[:user]
       end
