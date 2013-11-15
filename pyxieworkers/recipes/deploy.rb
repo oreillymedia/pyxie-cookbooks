@@ -37,8 +37,6 @@ node[:deploy].each do |application, deploy|
      app application
    end
    
-
-   
    directory "#{deploy[:deploy_to]}/current" do
      group deploy[:group]
      owner deploy[:user]
@@ -53,8 +51,6 @@ node[:deploy].each do |application, deploy|
      group       deploy[:group]
      user        deploy[:user]
    end
-   
-   
    
    # run bundle install
    env = deploy[:environment]["RACK_ENV"]
