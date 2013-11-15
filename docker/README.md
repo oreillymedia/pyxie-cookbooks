@@ -34,10 +34,11 @@ These attributes are under the `node['docker']` namespace.
 Attribute | Description | Type | Default
 ----------|-------------|------|--------
 arch | Architecture for docker binary (note: Docker only currently supports x86_64) | String | auto-detected (see attributes/default.rb)
+bind_socket | Socket path that docker should bind | String | unix:///var/run/docker.sock
+bind_uri | TCP URI docker should bind | String | nil
 http_proxy | HTTP_PROXY environment variable | String | nil
 install_dir | Installation directory for docker binary | String | auto-detected (see attributes/default.rb)
 install_type | Installation type for docker ("binary", "package" or "source") | String | "package"
-bind_uri | The location that docker should bind to. | String | tcp://0.0.0.0:4243 (docker default)
 options | Additional options to pass to docker. These could be flags like "-api-enable-cors". | String | nil
 
 ### Binary Attributes
@@ -177,10 +178,11 @@ Remove image:
 Here's how you can quickly get testing or developing against the cookbook thanks to [Vagrant](http://vagrantup.com/) and [Berkshelf](http://berkshelf.com/).
 
     vagrant plugin install vagrant-berkshelf
+    vagrant plugin install vagrant-cachier
     vagrant plugin install vagrant-omnibus
     git clone git://github.com/bflad/chef-docker.git
     cd chef-docker
-    vagrant up BOX # BOX being ubuntu1204, ubuntu1210, or ubuntu1304
+    vagrant up BOX # BOX being centos6, debian7, fedora18, fedora19, ubuntu1204, ubuntu1210, or ubuntu1304
 
 You can then SSH into the running VM using the `vagrant ssh BOX` command.
 
@@ -197,3 +199,7 @@ Please use standard Github issues/pull requests and if possible, in combination 
 ## Maintainers
 
 * Brian Flad (<bflad417@gmail.com>)
+
+## License
+
+Please see licensing information in: [LICENSE](LICENSE)

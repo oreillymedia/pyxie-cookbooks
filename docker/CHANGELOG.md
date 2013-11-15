@@ -1,3 +1,52 @@
+## 0.13.0
+
+* Bugfix: Move LWRP updated_on_last_action(true) calls so only triggered when something actually gets updated
+* Enhancement: Add container LWRP wait action
+* Enhancement: Add attach and stdin args to container LWRP start action
+* Enhancement: Add link arg to container LWRP remove action
+* Enhancement: Use cmd_timeout in container LWRP stop action arguments
+
+## 0.12.0
+
+* Bugfix: Add default bind_uri (nil) to default attributes
+* Enhancement: [GH-24] bind_socket attribute added
+
+## 0.11.0
+
+* DEPRACATION: container LWRP Fixnum port attribute: use full String notation from Docker documentation in port attribute instead
+* DEPRACATION: container LWRP public_port attribute: use port attribute instead
+* Enhancement: Additional container LWRP attributes:
+  * cidfile
+  * container_name
+  * cpu_shares
+  * dns
+  * expose
+  * link
+  * lxc_conf
+  * publish_exposed_ports
+  * remove_automatically
+  * volumes_from
+* Enhancement: Support Array in container LWRP attributes:
+  * env
+  * port
+  * volume
+
+## 0.10.1
+
+* Bugfix: Set default cmd_timeout in image LWRP to 300 instead of 60 because downloading images can take awhile
+* Enhancement: Change docker_test Dockerfile FROM to already downloaded busybox image instead of ubuntu
+* Enhancement: Add vagrant-cachier to Vagrantfile
+
+Other behind the scenes changes:
+* Made cookbook code Rubocop compliant
+* Move licensing information to LICENSE file
+* Updated .travis.yml and Gemfile
+
+## 0.10.0
+
+* Enhancement: [GH-22] cmd_timeout, path (image LWRP), working_directory (container LWRP) LWRP attributes
+* Bugfix: [GH-25] Install Go environment only when installing from source
+
 ## 0.9.1
 
 * Fix to upstart recipe to not restart service constantly (only on initial install and changes)
