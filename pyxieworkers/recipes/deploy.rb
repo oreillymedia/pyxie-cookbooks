@@ -14,7 +14,7 @@ execute "install_docker" do
 end
 
 execute "downgrade_docker" do
-  command "apt-get install lxc-docker-0.6.4"
+  command "apt-get install -y lxc-docker-0.6.4"
 end
 
 cookbook_file '/etc/init/docker.conf' do
