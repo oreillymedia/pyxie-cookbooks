@@ -10,6 +10,16 @@ include_recipe "redisio::enable"
 #include_recipe "npm"
 
 
+# make sure bundler is installed
+gem_package "Installing Bundler #{node[:bundler][:version]}" do
+  gem_binary node[:dependencies][:gem_binary]
+  retries 2
+  package_name "bundler"
+  action :install
+  version node[:bundler][:version]
+end
+
+
 node[:deploy].each do |application, deploy|
   
    Chef::Log.debug("*** Start here ***")
@@ -27,12 +37,7 @@ node[:deploy].each do |application, deploy|
      app application
    end
    
-   node[:packages].each do |package|
-      execute "gem install #{package}" do
-        cwd   "#{deploy[:deploy_to]}/current"
-        user  deploy[:user]
-      end
-   end
+
    
    directory "#{deploy[:deploy_to]}/current" do
      group deploy[:group]
@@ -50,13 +55,23 @@ node[:deploy].each do |application, deploy|
    end
    
    
-   # enable the  the docker.conf file to enable the docker API 
-   #group "docker" do
-   #  action :modify
-   #  members "vagrant"
-   #  append true
-   #end
-   #npm_package "hipache"
+   
+   # run bundle install
+   env = deploy[:environment]["RACK_ENV"]
+   without = ["development", "test", "staging", "production"]
+   without -= [env] if env
+   without = without.join(' ')
+
+   args = []
+   args << "--deployment"
+   args << "--without #{without}"
+   args << "--path vendor/bundle"
+
+   execute "bundle install #{args.join(" ")}" do
+     cwd   "#{deploy[:deploy_to]}/current"
+     user  deploy[:user]
+   end
+   
 
    cookbook_file '/etc/init/hipache.conf' do
       source "hipache.conf"
