@@ -6,14 +6,6 @@ include_recipe "apt"
 #include_recipe "redisio::enable"
 
 
-#******************************************************************************************
-#  Set up docker
-#******************************************************************************************
-
-include_recipe "docker"
-include_recipe "docker::upstart"
-
-
 
 #******************************************************************************************
 #  Set up everything involved in the ruby environment and the app
@@ -109,4 +101,14 @@ service 'hipache' do
   supports :restart => true, :start => true, :stop => true
   action [:enable, :start]
 end
+
+
+#******************************************************************************************
+#  Set up docker
+#******************************************************************************************
+
+include_recipe "docker"
+include_recipe "docker::upstart"
+
+
 
