@@ -10,8 +10,8 @@ include_recipe "redisio::enable"
 #  Set up docker
 #******************************************************************************************
 
-#include_recipe "docker::default"
-#include_recipe "docker::upstart"
+include_recipe "docker::binary"
+include_recipe "docker::upstart"
 
 
 
