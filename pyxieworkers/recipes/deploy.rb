@@ -9,6 +9,7 @@ include_recipe "redisio::enable"
 
 #include_recipe "npm"
 
+
 node[:deploy].each do |application, deploy|
   
    Chef::Log.debug("*** Start here ***")
@@ -26,19 +27,12 @@ node[:deploy].each do |application, deploy|
      app application
    end
    
-   # make sure bundler is installed
-   gem_package "Installing Bundler #{node[:bundler][:version]}" do
-     gem_binary node[:dependencies][:gem_binary]
-     retries 2
-     package_name "bundler"
-     action :install
-     version node[:bundler][:version]
+   node[:packages].each do |package|
+      execute "bundle install #{package}" do
+        cwd   "#{deploy[:deploy_to]}/current"
+        user  deploy[:user]
+      end
    end
-   
-   gem_package "foreman" do
-     action :install
-   end
-   
    
    directory "#{deploy[:deploy_to]}/current" do
      group deploy[:group]
