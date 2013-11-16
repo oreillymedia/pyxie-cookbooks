@@ -92,11 +92,11 @@ end
 #******************************************************************************************
 
 include_recipe "nodejs::install_from_source"
-include_recipe "npm"
 
-npm_package "hipache" do
-  action :install
-end
+#include_recipe "npm"
+#npm_package "hipache" do
+#  action :install
+#end
 
 cookbook_file '/etc/init/hipache.conf' do
    source "hipache.conf"
