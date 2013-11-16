@@ -2,19 +2,16 @@ ENV['LANGUAGE'] = ENV['LANG'] = ENV['LC_ALL'] = "en_US.UTF-8"
 
 include_recipe "apt"
 
-#include_recipe "redisio::install"
-#include_recipe "redisio::enable"
+include_recipe "redisio::install"
+include_recipe "redisio::enable"
 
 #******************************************************************************************
 #  Set up docker
 #******************************************************************************************
 
 execute "install_docker" do
-  command "curl -sL https://get.docker.io/ | sh"
-end
-
-execute "downgrade_docker" do
-  command "apt-get install -y lxc-docker-0.6.4"
+  command "curl -sL https://get.docker.io/ | sh; apt-get install -y lxc-docker-0.6.4"
+  not_if "dpkg --get-selections | grep -v deinstall | grep lxc-docker-0.6.4"
 end
 
 cookbook_file '/etc/init/docker.conf' do
