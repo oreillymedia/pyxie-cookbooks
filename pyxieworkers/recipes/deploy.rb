@@ -96,6 +96,22 @@ node[:deploy].each do |application, deploy|
    args << "--deployment"
    args << "--without #{without}"
    args << "--path vendor/bundle"
+   
+   # run god and thus the workers
+   god_monitor "workers" do
+     config        "workers.god.erb"
+     group         deploy[:group]
+     user          deploy[:user]
+     deploy_to     deploy[:deploy_to]
+   end
+
+   # kill workers with SIGTERM and let god start them up
+   ruby_block "kill_workers" do
+     block do
+       pids = Dir.glob("#{deploy[:deploy_to]}/shared/pids/*.pid").map { |f| File.read(f) }
+       system("kill #{pids.join(' ')}") if pids.size > 0
+     end
+   end
 
    execute "bundle install #{args.join(" ")}" do
      cwd   "#{deploy[:deploy_to]}/current"
@@ -106,26 +122,6 @@ node[:deploy].each do |application, deploy|
 end
 
 
-#******************************************************************************************
-#  Start god hipache
-#******************************************************************************************
-
-
-# run god and thus the workers
-god_monitor "workers" do
-  config        "workers.god.erb"
-  group         "pyxie"
-  user          "pyxie"
-  deploy_to     "/usr/local/app/current"
-end
-
-# kill workers with SIGTERM and let god start them up
-ruby_block "kill_workers" do
-  block do
-    pids = Dir.glob("#{deploy[:deploy_to]}/shared/pids/*.pid").map { |f| File.read(f) }
-    system("kill #{pids.join(' ')}") if pids.size > 0
-  end
-end
 
 
 
