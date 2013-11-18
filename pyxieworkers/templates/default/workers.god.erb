@@ -1,0 +1,63 @@
+God.pid_file_directory = "<%= @params[:deploy_to] %>/shared/pids"
+
+
+num_workers = <%= node[:pyxieworkers][:num_workers] %>
+
+num_workers.times do |num|
+  
+  God.watch do |w|
+    w.dir      = "<%= @params[:deploy_to] %>/current"
+    w.name     = "resque-#{num}"
+    w.group    = 'resque'
+    w.interval = 30.seconds
+    
+    w.log = "<%= @params[:deploy_to] %>/shared/log/#{w.name}.log"
+    
+    w.behavior(:clean_pid_file)
+
+    w.env           = { "TERM_CHILD" => 1, "QUEUE" => "*" }
+    w.start         = "bundle exec rake resque:work"
+    w.stop_timeout  = 60.seconds
+
+    w.uid = "<%= @params[:user] %>"
+    w.gid = "<%= @params[:group] %>"
+
+    # start if worker is not running
+    w.start_if do |start|
+      start.condition(:process_running) do |c|
+        c.interval = 10.seconds
+        c.running = false
+      end
+    end
+
+    # restart if taking up too many resources
+    w.restart_if do |restart|
+      restart.condition(:memory_usage) do |c|
+        c.above = 100.megabytes
+        c.times = [3, 5] # 3 out of 5 intervals
+        c.notify = 'campfire'
+      end
+    
+      restart.condition(:cpu_usage) do |c|
+        c.above = 75.percent
+        c.times = 5
+        c.notify = 'campfire'
+      end
+    end
+
+    # prevent start/stop/start/stop
+    w.lifecycle do |on|
+      on.condition(:flapping) do |c|
+        c.to_state = [:start, :restart]
+        c.times = 5
+        c.within = 5.minute
+        c.transition = :unmonitored
+        c.retry_in = 10.minutes
+        c.retry_times = 5
+        c.retry_within = 2.hours
+        c.notify = 'campfire'
+      end
+    end
+
+  end
+end

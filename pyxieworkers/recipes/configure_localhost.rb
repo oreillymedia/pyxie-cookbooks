@@ -28,6 +28,17 @@ end
 
 #npm_package "hipache"
 
+# make shared dirs
+['log','pids'].each do |dir_name|
+  directory "#{node[:deploy_to]}/#{dir_name}" do
+    group node[:group]
+    owner node[:user]
+    mode 0770
+    action :create
+    recursive true
+  end
+end
+
 cookbook_file '/etc/init/hipache.conf' do
   source "hipache.conf"
   owner 'root'
