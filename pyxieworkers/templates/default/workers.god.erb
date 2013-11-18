@@ -35,13 +35,11 @@ num_workers.times do |num|
       restart.condition(:memory_usage) do |c|
         c.above = 100.megabytes
         c.times = [3, 5] # 3 out of 5 intervals
-        c.notify = 'campfire'
       end
     
       restart.condition(:cpu_usage) do |c|
         c.above = 75.percent
         c.times = 5
-        c.notify = 'campfire'
       end
     end
 
@@ -55,7 +53,6 @@ num_workers.times do |num|
         c.retry_in = 10.minutes
         c.retry_times = 5
         c.retry_within = 2.hours
-        c.notify = 'campfire'
       end
     end
 
