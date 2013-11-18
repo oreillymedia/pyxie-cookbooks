@@ -102,6 +102,22 @@ node[:deploy].each do |application, deploy|
      user  deploy[:user]
    end
    
+   # run god and thus the workers
+   god_monitor "workers" do
+     config        "workers.god.erb"
+     group         deploy[:group]
+     user          deploy[:user]
+     deploy_to     deploy[:deploy_to]
+   end
+
+   # kill workers with SIGTERM and let god start them up
+   ruby_block "kill_workers" do
+     block do
+       pids = Dir.glob("#{deploy[:deploy_to]}/shared/pids/*.pid").map { |f| File.read(f) }
+       system("kill #{pids.join(' ')}") if pids.size > 0
+     end
+   end
+   
 end
 
 
