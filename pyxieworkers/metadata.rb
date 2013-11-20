@@ -15,7 +15,6 @@ end
 
 
 depends "dotenv"
-depends "docker"
 depends "apt"
 depends "ruby_build"
 depends "rbenv"

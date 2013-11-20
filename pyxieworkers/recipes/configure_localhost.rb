@@ -4,12 +4,28 @@ include_recipe "apt"
 include_recipe "ruby_build"
 include_recipe "rbenv::user"
 include_recipe "rbenv::vagrant"
-include_recipe "docker::default"
-include_recipe "docker::upstart"
 include_recipe "redisio::install"
 include_recipe "redisio::enable"
 include_recipe "nodejs::default"
 #include_recipe "npm"
+
+
+#******************************************************************************************
+#  Set up docker
+#******************************************************************************************
+
+execute "install_docker" do
+  command "curl -sL https://get.docker.io/ | sh; apt-get install -y lxc-docker-0.6.4"
+  not_if "dpkg --get-selections | grep -v deinstall | grep lxc-docker-0.6.4"
+end
+
+cookbook_file '/etc/init/docker.conf' do
+   source "docker.conf"
+   owner 'root'
+   group 'root'
+   mode '0644'
+end
+
 
 
 rbenv_gem "bundler" do
