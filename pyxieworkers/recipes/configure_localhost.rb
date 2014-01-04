@@ -7,6 +7,7 @@ include_recipe "rbenv::vagrant"
 include_recipe "redisio::install"
 include_recipe "redisio::enable"
 include_recipe "nodejs::default"
+include_recipe "nagios::default"
 #include_recipe "npm"
 
 
